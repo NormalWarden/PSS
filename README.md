@@ -4,11 +4,11 @@ Script for secure storage your passwords and something else.
 
 You can run it on computer or smartphone.
 
-# Why it secure?
+# Why is it secure?
 The PSS is secure because no one can get access to your database without your login and password which hashed up with SHA-512.
 All data is encrypted with AES-128.
 
-# How it works?
+# How does it works?
 First message is "*Create or Edit database*" or "*Sign up or sign in*".
 
 ![First message](/images/firstMessage.png)

@@ -24,6 +24,7 @@ def createDatabase():
 		json.dump(data, outfile, indent=4)
 		outfile.truncate()
 		outfile.close()
+		print("Successful\n")
 
 # Sign In
 def validUser():
@@ -51,7 +52,6 @@ def validUser():
 def createEntry():
 	with open("userdata.json", 'r+') as outfile:
 		data = json.load(outfile)
-		print("")
   
 		site = core.setSite()
 		login = core.setLogin()
@@ -144,7 +144,7 @@ def editEntry():
 				outfile.seek(0)
 				json.dump(data, outfile, indent=4)
 				outfile.truncate()
-				print("Change is saved")
+				print("Change is saved\n")
 				break
 			except (ValueError, IndexError):
 				print("Enter the valid data\n")
@@ -164,13 +164,13 @@ def checkEntry():
 				for i in range(len(data["content"])):
 					print(f"{i}. {decrypt(data['content'][i][0]['Site'], data['initvector'], data['key'])}")
 				answer = input()
-				
+				print("")
 				try:
 					for key, value in data["content"][int(answer)][0].items():
 						if isinstance(value, dict):
 							if bool(value):
 								for j in list(value.items()):
-									print(f"{list(value.items())[0][0]}: {decrypt(j[1], data['initvector'], data['key'])}")
+									print(f"{j[0]}: {decrypt(j[1], data['initvector'], data['key'])}")
 						else:
 							print(f"{key}: {decrypt(value, data['initvector'], data['key'])}")
 					print("")

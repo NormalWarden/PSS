@@ -3,6 +3,7 @@ import interface
 if __name__ == "__main__":
 	while True:
 		answer = input("Create database or edit?\n1. Create database\n2. Edit database\n")
+		print("")
 		if answer == "1":
 			interface.createDatabase()
 			break

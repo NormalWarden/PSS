@@ -25,4 +25,4 @@ Later utility will ask you about next action.
 
 ![Check the Entry](/images/checkingEntry.png)
 
-# PSS is better than note application!
+# PSS will help you with your privacy!

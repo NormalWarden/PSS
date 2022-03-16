@@ -31,20 +31,27 @@ def validUser():
 		data = json.load(outfile)
   
 		while True:
+			print("")
 			login = input("Enter the login: ")
-			password = input("\nEnter the password: ")
-		
+			password = input("Enter the password: ")
+			temp = 0
 			if hashlib.sha512(login.encode()).hexdigest() == data["login"]:
-				if hashlib.sha512(password.encode()).hexdigest() == data["password"]:
-					break
+				temp += 1
+			if hashlib.sha512(password.encode()).hexdigest() == data["password"]:
+				temp += 1
+			if temp == 2:
+				print("")
+				break
 			else:
-				print("Data is invalid\n")
+				print("Data is invalid")
+				temp = 0
 		outfile.close()
 
 # Entry = Place where contains data of accounts
 def createEntry():
 	with open("userdata.json", 'r+') as outfile:
 		data = json.load(outfile)
+		print("")
   
 		site = core.setSite()
 		login = core.setLogin()
@@ -82,14 +89,15 @@ def editEntry():
 
 		# Accounts count == 0
 		if len(data["content"]) == 0:
-			print("You have no one entry")
+			print("You have no one entry\n")
 			return
 
 		while True:
-			print("Choose an entry:\n")
+			print("Choose an entry:")
 			for i in range(len(data["content"])):
-				print(f"{i}. {decrypt(data['content'][i][0]['Site'], data['initvector'], data['key'])}\n")		
+				print(f"{i}. {decrypt(data['content'][i][0]['Site'], data['initvector'], data['key'])}")		
 			answer = input()
+			print("")
 
 			# Exist 6 adoption stages
 			# Denial
@@ -104,20 +112,27 @@ def editEntry():
 				for key, value in data["content"][int(answer)][0].items():
 					if isinstance(value, dict):
 						if bool(value): # If dict is not empty
-							print(f"{index}. {list(value.items())[0][0]}: {decrypt(list(value.items())[0][1], data['initvector'], data['key'])}")
+							if index == 3:
+								print("3. Another information\n")
+							else:
+								print(f"{index}. {list(value.items())[0][0]}: {decrypt(list(value.items())[0][1], data['initvector'], data['key'])}")
 					else:
 						print(f"{index}. {key}: {decrypt(value, data['initvector'], data['key'])}")
 					index += 1
 				answer1 = input()
+				print("")
 
 				# User choose OtherInformation
 				if answer1 == "3":
-					print("Choose a field:\n")
-					for h in range(len(data["content"][int(answer)][0]['OtherInformation'])):
-						print(f"{h}. {list(data['content'][int(answer)][0]['OtherInformation'].items())[h][0]}: {decrypt(list(data['content'][int(answer)][0]['OtherInformation'].items())[h][1], data['initvector'], data['key'])}")
-					answer2 = input()
-					value = input("Enter the value: ")
-					data["content"][int(answer)][0]["OtherInformation"][list(data["content"][int(answer)][0]["OtherInformation"].items())[int(answer2)][0]] = encryptWithInputData(value, data["initvector"], data['key'])
+					if len(data["content"][int(answer)][0]['OtherInformation']) == 0:
+						print("You have no other inforamtion")
+					else:
+						print("Choose a field:\n")
+						for h in range(len(data["content"][int(answer)][0]['OtherInformation'])):
+							print(f"{h}. {list(data['content'][int(answer)][0]['OtherInformation'].items())[h][0]}: {decrypt(list(data['content'][int(answer)][0]['OtherInformation'].items())[h][1], data['initvector'], data['key'])}")
+						answer2 = input()
+						value = input("Enter the value: ")
+						data["content"][int(answer)][0]["OtherInformation"][list(data["content"][int(answer)][0]["OtherInformation"].items())[int(answer2)][0]] = encryptWithInputData(value, data["initvector"], data['key'])
 				# User choose Password or Something else
 				else:
 					if answer1 == "2":
@@ -129,10 +144,10 @@ def editEntry():
 				outfile.seek(0)
 				json.dump(data, outfile, indent=4)
 				outfile.truncate()
-				print("Successfully")
+				print("Change is saved")
 				break
 			except (ValueError, IndexError):
-				print("Enter the valid data")
+				print("Enter the valid data\n")
 		outfile.close()
 
 # Printing data of account
@@ -141,24 +156,26 @@ def checkEntry():
 		data = json.load(outfile)
   
 		if len(data["content"]) == 0:
-			print("You have no one entry")
+			print("You have no one entry\n")
 			return
 		else:
 			while True:
 				print("Choose an entry:\n")
 				for i in range(len(data["content"])):
-					print(f"{i}. {decrypt(data['content'][i][0]['Site'], data['initvector'], data['key'])}\n")
+					print(f"{i}. {decrypt(data['content'][i][0]['Site'], data['initvector'], data['key'])}")
 				answer = input()
 				
 				try:
 					for key, value in data["content"][int(answer)][0].items():
 						if isinstance(value, dict):
 							if bool(value):
-								print(f"{list(value.items())[0][0]}: {decrypt(list(value.items())[0][1], data['initvector'], data['key'])}")
+								for j in list(value.items()):
+									print(f"{list(value.items())[0][0]}: {decrypt(j[1], data['initvector'], data['key'])}")
 						else:
 							print(f"{key}: {decrypt(value, data['initvector'], data['key'])}")
+					print("")
 					break
 				except (ValueError, IndexError):
-					print("Enter the valid number")
+					print("Enter the valid number\n")
      
 		outfile.close()

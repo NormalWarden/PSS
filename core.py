@@ -47,10 +47,10 @@ def generatePassword():
 		for i in range(int(symbolsAmount)):
 			password += choice(availableCharacters)
 	except (ValueError, IndexError):
-		return "Failed to generate a password"
+		return "Failed to generate a password\n"
 	
 	if password == "":
-		return "Failed to generate a password"
+		return "Failed to generate a password\n"
 	else:
 		return password
 
@@ -81,21 +81,24 @@ def addOtherInformation():
 def changeOtherInformation(dataDict):
 	while True:
 		print("Choose field:\n")
-		for i in range(len(dataDict["OtherInformation"])):
-			for informationKey, valueKey in dataDict["OtherInformation"].items():
-				print(f"{i}. {informationKey}: {valueKey}\n")
+		#for i in range(len(dataDict["OtherInformation"])):
+		temp = 0
+		for informationKey, valueKey in dataDict["OtherInformation"].items():
+			print(f"{temp}. {informationKey}: {valueKey}\n")
+			temp += 1
 		answer = input()
-  
+		temp = 0
 		try:
 			dataDict["OtherInformation"][list(dataDict["OtherInformation"])[int(answer)]] = input("\nEnter the new value: ")
 			return dataDict
 		except (ValueError, IndexError):
-			print("Enter the valid number")
+			print("Enter the valid number\n")
 
 def checkValidity(dataDict):
 	while True:
 		if input("Should you rewrite something? (Y/N)\n").upper() == "Y":
 			number = input("Choose an paragraph: \n1. Site \n2. Login \n3. Password \n4. Another paragraph\n")
+			print("")
 			if number == "1":
 				dataDict["Site"] = setSite()
 				break
@@ -106,8 +109,13 @@ def checkValidity(dataDict):
 				dataDict["Password"] = setPassword()
 				break
 			elif number == "4":
-				dataDict = changeOtherInformation(dataDict)
+				if dataDict["OtherInformation"] == False:
+					print("You have no other infromation\n")
+				else:
+					dataDict = changeOtherInformation(dataDict)
 				break
 			else:
-				print("Enter the valid number")
+				print("Enter the valid number\n")
+		else:
+			break
 	return dataDict

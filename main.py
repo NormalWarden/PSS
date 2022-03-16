@@ -10,10 +10,11 @@ if __name__ == "__main__":
 			interface.validUser()
 			break
 		else:
-			print("Enter number (1, 2)")
+			print("Enter 1 or 2\n")
   
 	while True:
 		answer = input("What do you want to do?\n1. Create Entry\n2. Edit Entry\n3. Check the Entry\n")
+		print("")
 		if answer == "1":
 			interface.createEntry()
 		elif answer == "2":
@@ -21,4 +22,4 @@ if __name__ == "__main__":
 		elif answer == "3":
 			interface.checkEntry()
 		else:
-			print("Enter the valid number")
+			print("Enter the valid number\n")
